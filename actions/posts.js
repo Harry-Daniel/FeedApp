@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { storePost } from "@/lib/posts";
+import { storePost, updatePostLikeStatus } from "@/lib/posts";
 import { uploadImage } from "@/lib/cloudinary";
 
 export async function createPost(prevState, formData) {
@@ -29,13 +29,12 @@ export async function createPost(prevState, formData) {
 
   let imageURL;
 
-  try{
-   imageURL = await uploadImage(image);}
-  catch(error){
-    throw new Error('Image upload failed, post not created, try again later')
+  try {
+    imageURL = await uploadImage(image);
+  } catch (error) {
+    throw new Error("Image upload failed, post not created, try again later");
   }
 
-  
   await storePost({
     imageUrl: imageURL,
     title,
@@ -45,3 +44,8 @@ export async function createPost(prevState, formData) {
 
   redirect("/feed");
 }
+
+export async function togglePostLikeStatus(postId) {
+  updatePostLikeStatus(postId, 2);
+}
+// Any argument binded using .bind method becomes the first arguments provided while all other default arguments become second / coming after

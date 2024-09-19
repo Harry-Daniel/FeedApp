@@ -43,11 +43,12 @@ export async function createPost(prevState, formData) {
     userId: 1,
   });
 
+  revalidatePath("/", "layout");
   redirect("/feed");
 }
 
 export async function togglePostLikeStatus(postId) {
- await updatePostLikeStatus(postId, 2);
- revalidatePath('/', 'layout');
+  await updatePostLikeStatus(postId, 2);
+  revalidatePath("/", "layout");
 }
 // Any argument binded using .bind method becomes the first arguments provided while all other default arguments become second / coming after

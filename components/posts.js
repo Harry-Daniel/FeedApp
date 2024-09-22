@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useOptimistic } from "react";
 
 import { formatDate } from "@/lib/format";
@@ -6,11 +6,26 @@ import LikeButton from "./like-icon";
 import { togglePostLikeStatus } from "@/actions/posts";
 import Image from "next/image";
 
+function imageLoader(config) {
+  const urlStart = config.src.split("upload/")[0];
+  const urlEnd = config.src.split("upload/")[1];
+
+  const transformations = `w_200,q_${config.quality}`;
+  return `${urlStart}upload/${transformations}/${urlEnd}`;
+}
+
 function Post({ post, action }) {
   return (
     <article className="post">
       <div className="post-image">
-        <Image src={post.image} fill alt={post.title} />
+        <Image
+          loader={imageLoader}
+          src={post.image}
+          width={200}
+          height={120}
+          alt={post.title}
+          quality={50}
+        />
       </div>
       <div className="post-content">
         <header>
@@ -70,7 +85,7 @@ export default function Posts({ posts }) {
     <ul className="posts">
       {optimisticPosts.map((post) => (
         <li key={post.id}>
-          <Post post={post} action={updatePost}/>
+          <Post post={post} action={updatePost} />
         </li>
       ))}
     </ul>
